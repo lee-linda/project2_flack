@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+    {% if channel_list %}
+        <h4>Available Channels :</h4>
+            <p> </p>
+        {% for channel in channel_list %}
+           <a href="{{ url_for('channel', curChannel=channel) }}">
+                    {{ channel }}
+           </a>
+           <p> </p>
+        {% endfor %}
+
+    {% else %}
+        No channel.
+    {% endif %}
+
+    <br>
+    <br>
+    <br>
+    <br>
+    Create a new channel.
+    <br>
+    <br>
+    <form action="/create" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="newChannel" placeholder="Channel name" type="text">
+        </div>
+
+        <button class="btn btn-primary" type="submit">Create</button>
+    </form>
+
+    <script>
+        // Convert channel_list to JSON
+        let channel_list = {{ channel_list | tojson | safe }}
+        // Get last channel from browser local storage
+        let channel = localStorage.getItem('last_channel');
+
+        if (channel && channel_list) {
+            // Check if last channel is in channel list, if yes, go back to last channel window.
+            if (channel_list.includes(channel)) {
+                window.location.replace('/channel/' + channel);
+            }
+        }
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sign In
+{% endblock %}
+
+{% block main %}
+    Please sign in with existing username or create a new one.
+    <br>
+    <br>
+    <form action="/signin" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text">
+        </div>
+
+        <button class="btn btn-primary" type="submit">Sign In</button>
+    </form>
+{% endblock %}

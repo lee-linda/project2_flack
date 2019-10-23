@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{ curChannel }}
+{% endblock %}
+
+{% block main %}
+
+    <script src="{{ url_for('static', filename='channel.js') }}"></script>
+
+    <div>
+        <h1 style="margin-bottom: 1rem">
+            <span class="badge">
+                {{ curChannel }}
+            </span>
+        </h1>
+
+    </div>
+
+    <div class="container-channel custom-window">
+
+        <div class="list-group">
+            {#
+                http://jinja.pocoo.org/docs/2.10/templates/#whitespace-control
+
+                Minus(-) used to strip all whitespaces.
+                Only if there are messages, render it.
+            #}
+            <textarea id="chat" rows="20" readonly>
+                {%- if messages -%}
+                    {%- for message in messages -%}
+                        {{ message[0] }} [ {{ message[1] }} ]: {{ message [2] }} {{'\n'}}
+                    {%- endfor -%}
+                    {{ '----- These are old messages -----' }}{{- '\n' -}}
+                {%- endif -%}
+            </textarea>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-sm">
+                <div class="input-group">
+                    <input id="msg" class="form-control" size="50" autocomplete="off" autofocus>
+                </div>
+            </div>
+            <div class="form-group col-sm-2">
+                <button id="send-button" class="btn" type="submit">Send</button>
+            </div>
+            <div class="form-group col-sm-2">
+                <button id="leave" class="btn leave" type="submit">Leave channel</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+
+       document.addEventListener('DOMContentLoaded', () => {
+
+            // By default, send button is disabled
+            document.querySelector('#send-button').disabled = true;
+
+            // Enable send button only if there is text in the msg field
+            document.querySelector('#msg').onkeyup = () => {
+                if (document.querySelector('#msg').value.length > 0)
+                    document.querySelector('#send-button').disabled = false;
+                else
+                    document.querySelector('#send-button').disabled = true;
+            };
+
+        });
+
+    </script>
+
+{% endblock %}
